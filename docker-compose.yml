@@ -1,0 +1,36 @@
+version: "3"
+services:
+  web:
+    image: myweb
+    container_name: myweb
+    ports:
+      - 5555:5555
+    volumes:
+      - ./:/usr/local/myweb
+    command: Python3 app.py
+  redis:
+    image: redis
+    container_name: my_redis
+    ports:
+      - 6379:6379
+    command: redis-server --appendonly yes
+
+  db:
+    image: mariadb
+    container_name: my_mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pwd
+
+  nginx:
+    image: nginx
+    container_name: my_nginx
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/log:/var/log
+      - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf
